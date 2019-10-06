@@ -9,7 +9,15 @@ process.env.NODE_ENV = process.env.NODE_ENV || "dev";
 
 let urlDB;
 
-if (process.env.NODE_ENV === "dev1") {
+//Vencimiento 30 dias token
+
+process.env.EXP_TOKEN = 60 * 60 * 24 * 30;
+
+//Seed
+
+process.env.SEED = process.env.SEED || "serverNode-js";
+
+if (process.env.NODE_ENV === "dev") {
   urlDB = "mongodb://localhost:27017/cafe";
 } else {
   urlDB = `${process.env.MONGO_URI}&${process.env.REPL}&${process.env.AUTH}&${process.env.RETR}&${process.env.W}`;

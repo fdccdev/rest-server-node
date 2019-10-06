@@ -2,9 +2,10 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const _ = require("underscore");
 const Usuario = require("../models/usuario");
+const { authToken, userAuth } = require("../middlewares/auth");
 const app = express();
 
-app.get("/usuarios", (req, res) => {
+app.get("/usuario", authToken, (req, res) => {
   let desde = req.query.desde || 0;
 
   desde = Number(desde);
@@ -34,7 +35,7 @@ app.get("/usuarios", (req, res) => {
     });
 });
 
-app.post("/usuario", (req, res) => {
+app.post("/usuario", [authToken, userAuth], (req, res) => {
   let body = req.body;
 
   let usuario = new Usuario({
@@ -59,7 +60,7 @@ app.post("/usuario", (req, res) => {
   });
 });
 
-app.put("/usuario/:id", (req, res) => {
+app.put("/usuario/:id", [authToken, userAuth], (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ["nombre", "email", "role", "estado"]);
 
@@ -83,7 +84,7 @@ app.put("/usuario/:id", (req, res) => {
   );
 });
 
-app.delete("/usuario/:id", (req, res) => {
+app.delete("/usuario/:id", [authToken, userAuth], (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ["estado"]);
   body.estado = false;
